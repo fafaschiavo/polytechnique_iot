@@ -3,17 +3,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Wget {
 
-  public static void doThreadedPool(String requestedURL, String proxyHost, int proxyPort) {
-    int thread_pool_size = 20;
+  public static void doMultiThreaded(String requestedURL, String proxyHost, int proxyPort) {
     int initial_amount_of_threads = Thread.activeCount();
-    final URLQueue queue = new BlockingListQueue();
-    Thread myThreads[] = new Thread[thread_pool_size];
-    Boolean is_threads_done[] = new Boolean[thread_pool_size];
+    final URLQueue queue = new SynchronizedListQueue();
+    Thread myThreads[] = new Thread[100000];
     int thread_index = 0;
-
-    for(int i=0; i<thread_pool_size; i++){
-      is_threads_done[i] = true;
-    }
 
     URLprocessing.handler = new URLprocessing.URLhandler() {
       // this method is called for each matched url
@@ -38,36 +32,8 @@ public class Wget {
         call_xurl call_xurl_object = new call_xurl(url, proxyHost, proxyPort);  
         myThreads[thread_index] = new Thread(call_xurl_object);
         myThreads[thread_index].start();
-        is_threads_done[thread_index] = !myThreads[thread_index].isAlive(); 
+        thread_index = thread_index + 1; 
       }
-
-      do {
-        thread_index = thread_pool_size;
-        for(int i=0; i<thread_pool_size; i++){
-          try{
-            if (!myThreads[i].isAlive()) {
-              is_threads_done[i] = true;
-            }else{
-              is_threads_done[i] = false;
-            }
-
-          }catch(NullPointerException e){
-            is_threads_done[i] = true;
-          }
-
-          if (is_threads_done[i]) {
-            thread_index = i;
-          }
-        }
-
-        if (thread_index == thread_pool_size) {
-          try {
-              Thread.sleep(100);
-          } catch(Exception e) {}
-        }
-
-      } while (thread_index == thread_pool_size);
-
 
     }
   }
@@ -84,7 +50,7 @@ public class Wget {
     int proxyPort = -1;
     if (args.length > 2)
       proxyPort = Integer.parseInt(args[2]);
-    doThreadedPool(args[0], proxyHost, proxyPort);
+    doMultiThreaded(args[0], proxyHost, proxyPort);
 
     System.out.println("I am done here");
 
