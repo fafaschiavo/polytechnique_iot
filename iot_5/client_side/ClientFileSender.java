@@ -59,6 +59,10 @@ public class ClientFileSender {
       System.out.println("Started sending...");
       while (sc.hasNextLine()) {
         sender.send(sc.nextLine());
+        // try{
+        //     Thread.sleep(500);
+        // }catch (Exception e){
+        // }
       }
       System.out.println("Done sending...");
       sc.close();

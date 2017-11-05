@@ -19,7 +19,7 @@ public class ConnectedLayer implements Layer {
     remoteId = -1;
     remoteNum = -1;
     aboveLayer = null;
-    DispatchLayer.register(this, sessionId);
+    GroundLayer.deliverTo(this);
     send(HELLO);
   }
 
@@ -84,6 +84,3 @@ public class ConnectedLayer implements Layer {
     aboveLayer = null;
   }
 }
-
-// java ClientFileSender 8005 localhost 8004 sample_file.txt
-// java Server_4 8004 localhost 8005

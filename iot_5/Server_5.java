@@ -7,6 +7,7 @@ public class Server_5 {
     }
     if (GroundLayer.start(Integer.parseInt(args[0]))) {
       GroundLayer.RELIABILITY = 0.6;
+      // GroundLayer.RELIABILITY = 1;
       DispatchLayer.start();
     }
   }

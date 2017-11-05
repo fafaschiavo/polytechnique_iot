@@ -33,13 +33,19 @@ class FileReceiver implements Layer {
 
         if (payload.toLowerCase().contains("SEND".toLowerCase()) && !started_receiving) {
             started_receiving = true;
+            System.out.println("Filename: " + payload.split("SEND ")[1]);
             try{
                 writer = new PrintWriter("_received_" + payload.split("SEND ")[1], "UTF-8");
-            }catch (Exception e){}
+            }catch (Exception e){
+                System.err.println("Got an Exception while creating file...");
+            }
+
         }else if (payload.trim().equals("**CLOSE**")) {
             still_receiving = false;
+            System.out.println("I am done here");
             writer.close();
         }else{
+            System.out.println("Received: " + payload);
             writer.println(payload);
         }
     }
@@ -71,10 +77,12 @@ public class Server_4 {
         if (GroundLayer.start(Integer.parseInt(args[0]))) {
             // GroundLayer.RELIABILITY = 0.5;
             FileReceiver receiver = new FileReceiver(args[1], Integer.parseInt(args[2]), (int) (Math.random() * Integer.MAX_VALUE));
+            System.out.println("Now opening connections...");
             while(receiver.still_receiving){
                 try{
                     Thread.sleep(1);
                 }catch (Exception e){
+                    System.err.println("Got an Exception while reading...");
                 }
             }
             receiver.close();
