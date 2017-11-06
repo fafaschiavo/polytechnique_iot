@@ -28,9 +28,9 @@ public class HelloMessage {
 
 			try {
 				sender_ID = content_array[1];
-				sequence_number = Integer.parseInt(content_array[2]);
-				hello_interval = Integer.parseInt(content_array[3]);
-				number_of_peers = Integer.parseInt(content_array[4]);
+				sequence_number = Integer.parseInt(content_array[2].trim());
+				hello_interval = Integer.parseInt(content_array[3].trim());
+				number_of_peers = Integer.parseInt(content_array[4].trim());
 
 				if (number_of_peers > 0) {
 					String[] current_peers_array;
@@ -40,6 +40,7 @@ public class HelloMessage {
 					}
 				}
 			} catch (Exception e){
+				System.out.println(e);
 				throw new java.lang.RuntimeException("I had an error while creating the message...");
 			}
 
@@ -138,31 +139,6 @@ public class HelloMessage {
 
 	public void setHelloInterval(int HelloInterval){
 		hello_interval = HelloInterval;
-	}
-
-	public static void main(String[] args) {
-
-		HelloMessage new_hello = new HelloMessage("HELLo;Bob;42;60;2;Fafis;Ju");
-		// HelloMessage new_hello = new HelloMessage("Fafis", 2, 25);
-
-		// HelloMessage new_hello = new HelloMessage("HELLo;Bob;42;60;0");
-
-		System.out.println("Hi there");
-		System.out.println("--------------");
-		System.out.println(new_hello.getHelloMessageAsEncodedString());
-		System.out.println("--------------");
-		// for (int i = 0; i<256 ; i++) {
-		// 	new_hello.addPeer("Sasha");
-		// }
-		new_hello.addPeer("Sasha");
-		System.out.println(new_hello.getHelloMessageAsEncodedString());
-		System.out.println("--------------");
-		System.out.println(new_hello);
-		System.out.println("--------------");
-		new_hello.setSenderID("Hi");
-		new_hello.setSequenceNumber(10);
-		new_hello.setHelloInterval(11);
-		System.out.println(new_hello);
 	}
 
 }

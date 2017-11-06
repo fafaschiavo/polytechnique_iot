@@ -140,4 +140,29 @@ public class HelloMessage {
 		hello_interval = HelloInterval;
 	}
 
+	public static void main(String[] args) {
+
+		HelloMessage new_hello = new HelloMessage("HELLo;Bob;42;60;2;Fafis;Ju");
+		// HelloMessage new_hello = new HelloMessage("Fafis", 2, 25);
+
+		// HelloMessage new_hello = new HelloMessage("HELLo;Bob;42;60;0");
+
+		System.out.println("Hi there");
+		System.out.println("--------------");
+		System.out.println(new_hello.getHelloMessageAsEncodedString());
+		System.out.println("--------------");
+		// for (int i = 0; i<256 ; i++) {
+		// 	new_hello.addPeer("Sasha");
+		// }
+		new_hello.addPeer("Sasha");
+		System.out.println(new_hello.getHelloMessageAsEncodedString());
+		System.out.println("--------------");
+		System.out.println(new_hello);
+		System.out.println("--------------");
+		new_hello.setSenderID("Hi");
+		new_hello.setSequenceNumber(10);
+		new_hello.setHelloInterval(11);
+		System.out.println(new_hello);
+	}
+
 }
