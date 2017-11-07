@@ -119,7 +119,6 @@ public class MuxDemuxSimple implements Runnable{
 			if (!peer_table.get(pair.getKey()).is_peer_expired()) {
 				valid_peers_list.add(peer_table.get(pair.getKey()).get_peer_id());
 			}
-			it.remove(); // avoids a ConcurrentModificationException
 		}
 
 		String[] valid_peers_array = new String[valid_peers_list.size()];
@@ -128,8 +127,15 @@ public class MuxDemuxSimple implements Runnable{
 	}
 
 	public static void main(String[] args) {
-		String myID = "fabricio";
+		if (args.length < 1) {
+			System.err.println("Usage: java MuxDemuxSimple YOUR_ID");
+			System.exit(-1);
+		}
+
+		String myID = args[0];
+		System.out.println("==========================================");
 		System.out.println("Hi there! This computer's ID is: " + myID);
+		System.out.println("==========================================");
 		SimpleMessageHandler[] handlers = new SimpleMessageHandler[3];
 		handlers[0] = new HelloSender(myID);
 		handlers[1]= new HelloReceiver(myID);
