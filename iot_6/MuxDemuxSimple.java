@@ -118,6 +118,8 @@ public class MuxDemuxSimple implements Runnable{
 			Map.Entry pair = (Map.Entry)it.next();
 			if (!peer_table.get(pair.getKey()).is_peer_expired()) {
 				valid_peers_list.add(peer_table.get(pair.getKey()).get_peer_id());
+			}else{
+				it.remove();
 			}
 		}
 

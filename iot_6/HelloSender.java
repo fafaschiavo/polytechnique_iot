@@ -7,6 +7,8 @@ public class HelloSender implements SimpleMessageHandler{
     private SynchronizedListQueue incoming = new SynchronizedListQueue();
     private MuxDemuxSimple myMuxDemux = null;
     private String myID;
+    private int sequence_number = 0;
+    private int hello_interval = 2;
 
 
     public HelloSender(String constructor_ID){
@@ -39,7 +41,7 @@ public class HelloSender implements SimpleMessageHandler{
             // HelloSender only generate messages
             // /////////////////////////////////////////////////////////////////////////////////////////////
 
-            HelloMessage new_message = new HelloMessage(myID, 0, 2);
+            HelloMessage new_message = new HelloMessage(myID, sequence_number, hello_interval);
             String[] valid_peers = myMuxDemux.get_valid_peers();
             System.out.println("Current valid peers in peer list:" + Arrays.toString(valid_peers));
             for (int i=0; i < valid_peers.length ; i++) {
@@ -48,6 +50,7 @@ public class HelloSender implements SimpleMessageHandler{
             String encoded_new_message = new_message.getHelloMessageAsEncodedString();
             System.out.println("HelloSender sent: " + encoded_new_message);
             myMuxDemux.send(encoded_new_message);
+            sequence_number = sequence_number + 1;
             try {
               Thread.sleep(2000);
             } catch(InterruptedException ex) {

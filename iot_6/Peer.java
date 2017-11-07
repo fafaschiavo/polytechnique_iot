@@ -24,7 +24,6 @@ public class Peer{
 	private String peerState;
 
 	Peer(String new_peerID, InetAddress new_peerIPAddress, int new_peerSeqNum, int expiration_delay){
-		System.out.println("New Peer Created <<<<<");
 		peerID = new_peerID;
 		peerIPAddress = new_peerIPAddress;
 		peerSeqNum = new_peerSeqNum;
@@ -46,6 +45,7 @@ public class Peer{
 		if (new_peerSeqNum == peerSeqNum && peerState.equals("synchronised")) {
 			peerState = "synchronised";
 		}
+		peerSeqNum = peerSeqNum + 1;
 	}
 
 	public String get_peer_id(){
