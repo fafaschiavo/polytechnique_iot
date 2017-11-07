@@ -41,7 +41,7 @@ public class MuxDemuxSimple implements Runnable{
 			// /////////////////////////////////////////////////////////////////////////////////////////////
 			// This is the writting loop thread 
 			// /////////////////////////////////////////////////////////////////////////////////////////////
-			System.out.println("Now writting");
+			System.out.println("Writting Thread Started...");
 			while(true){
 				try{
 
@@ -69,7 +69,7 @@ public class MuxDemuxSimple implements Runnable{
 				myMessageHandlers[i].setMuxDemux(this);
 			}
 			try{
-				System.out.println("Now reading");
+				System.out.println("Reading Thread Started...");
 				while(true){
 					byte[] receiveData = new byte[1024];
 					DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -128,16 +128,17 @@ public class MuxDemuxSimple implements Runnable{
 	}
 
 	public static void main(String[] args) {
-		System.out.println("Hi there");
+		String myID = "fabricio";
+		System.out.println("Hi there! This computer's ID is: " + myID);
 		SimpleMessageHandler[] handlers = new SimpleMessageHandler[3];
-		handlers[0] = new HelloSender("fabricio");
-		handlers[1]= new HelloReceiver("fabricio");
+		handlers[0] = new HelloSender(myID);
+		handlers[1]= new HelloReceiver(myID);
 		handlers[2]= new DebugReceiver();
 
 		try {
 			DatagramSocket mySocket = new DatagramSocket(4242);
 			mySocket.setBroadcast(true);
-			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, "fabricio");
+			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, myID);
 			handlers[0].setMuxDemux(dm);
 			new Thread(handlers[0]).start();
 			new Thread(handlers[1]).start();

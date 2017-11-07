@@ -1,5 +1,6 @@
 import java.util.NoSuchElementException;
 import java.net.InetAddress;
+import java.util.Arrays;
 
 public class HelloSender implements SimpleMessageHandler{
 
@@ -40,10 +41,12 @@ public class HelloSender implements SimpleMessageHandler{
 
             HelloMessage new_message = new HelloMessage(myID, 0, 2);
             String[] valid_peers = myMuxDemux.get_valid_peers();
+            System.out.println("Current valid peers in peer list:" + Arrays.toString(valid_peers));
             for (int i=0; i < valid_peers.length ; i++) {
                 new_message.addPeer(valid_peers[i]);
             }
             String encoded_new_message = new_message.getHelloMessageAsEncodedString();
+            System.out.println("HelloSender sent: " + encoded_new_message);
             myMuxDemux.send(encoded_new_message);
             try {
               Thread.sleep(2000);
