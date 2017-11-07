@@ -14,18 +14,25 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Iterator;
+import java.util.Set;
 
 public class MuxDemuxSimple implements Runnable{
 
+	private String myID = null;
     private DatagramSocket myS = null;
     private BufferedReader in;
     private SimpleMessageHandler[] myMessageHandlers;
     private SynchronizedListQueue outgoing = new SynchronizedListQueue();
     private Boolean reading_thread_up = false;
+    private HashMap<String, Peer> peer_table = new HashMap<String, Peer>();
 
-	MuxDemuxSimple(SimpleMessageHandler[] h, DatagramSocket s){
+	MuxDemuxSimple(SimpleMessageHandler[] h, DatagramSocket s, String constructor_ID){
 		myS = s;
 		myMessageHandlers = h;
+		myID = constructor_ID;
 	}
 
 	public void run(){
@@ -68,11 +75,11 @@ public class MuxDemuxSimple implements Runnable{
 					DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 					myS.receive(receivePacket);
 					String message = new String( receivePacket.getData());
-					InetAddress IPAddress = receivePacket.getAddress();
+					InetAddress ip_address = receivePacket.getAddress();
 					int port = receivePacket.getPort();
 
 					for (int i=0; i<myMessageHandlers.length; i++){
-						myMessageHandlers[i].handleMessage(message);
+						myMessageHandlers[i].handleMessage(message, ip_address);
 					}
 				}
 
@@ -89,18 +96,48 @@ public class MuxDemuxSimple implements Runnable{
 		outgoing.enqueue(s);
 	}
 
+	public void touch_new_peer(String new_peerID, InetAddress new_peerIPAddress, int new_peerSeqNum, int expiration_delay){
+		if (!new_peerID.equals(myID)) {
+			if (peer_table.get(new_peerID) == null) {
+				Peer new_peer = new Peer(new_peerID, new_peerIPAddress, new_peerSeqNum, expiration_delay);
+				peer_table.put(new_peerID, new_peer);
+			}else{
+				Peer existing_peer = peer_table.get(new_peerID);
+				existing_peer.update_peer_state(new_peerSeqNum, expiration_delay);
+			}		
+		}
+
+	}
+
+	public String[] get_valid_peers(){
+		int valid_counter = 0;
+		List<String> valid_peers_list = new ArrayList<String>();
+
+		Iterator it = peer_table.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry)it.next();
+			if (!peer_table.get(pair.getKey()).is_peer_expired()) {
+				valid_peers_list.add(peer_table.get(pair.getKey()).get_peer_id());
+			}
+			it.remove(); // avoids a ConcurrentModificationException
+		}
+
+		String[] valid_peers_array = new String[valid_peers_list.size()];
+		valid_peers_array = valid_peers_list.toArray(valid_peers_array);
+		return valid_peers_array;
+	}
 
 	public static void main(String[] args) {
 		System.out.println("Hi there");
 		SimpleMessageHandler[] handlers = new SimpleMessageHandler[3];
-		handlers[0] = new HelloSender();
-		handlers[1]= new HelloReceiver();
+		handlers[0] = new HelloSender("fabricio");
+		handlers[1]= new HelloReceiver("fabricio");
 		handlers[2]= new DebugReceiver();
 
 		try {
 			DatagramSocket mySocket = new DatagramSocket(4242);
 			mySocket.setBroadcast(true);
-			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket);
+			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, "fabricio");
 			handlers[0].setMuxDemux(dm);
 			new Thread(handlers[0]).start();
 			new Thread(handlers[1]).start();

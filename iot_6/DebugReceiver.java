@@ -1,4 +1,5 @@
 import java.util.NoSuchElementException;
+import java.net.InetAddress;
 
 public class DebugReceiver implements SimpleMessageHandler{
 
@@ -13,7 +14,7 @@ public class DebugReceiver implements SimpleMessageHandler{
         myMuxDemux = md;
     }
 
-    public void handleMessage(String m){
+    public void handleMessage(String m, InetAddress ip_address){
         incoming.enqueue(m);
     }
 	

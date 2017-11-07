@@ -1,19 +1,22 @@
 import java.util.NoSuchElementException;
+import java.net.InetAddress;
 
 public class HelloSender implements SimpleMessageHandler{
 
     private SynchronizedListQueue incoming = new SynchronizedListQueue();
     private MuxDemuxSimple myMuxDemux = null;
+    private String myID;
 
-    public HelloSender(){
 
+    public HelloSender(String constructor_ID){
+        myID = constructor_ID;
     }
 
     public void setMuxDemux(MuxDemuxSimple md){
         myMuxDemux = md;
     }
 
-    public void handleMessage(String m){
+    public void handleMessage(String m, InetAddress ip_address){
     }
 	
     public void run(){
@@ -35,7 +38,11 @@ public class HelloSender implements SimpleMessageHandler{
             // HelloSender only generate messages
             // /////////////////////////////////////////////////////////////////////////////////////////////
 
-            HelloMessage new_message = new HelloMessage("fabricio", 0, 2);
+            HelloMessage new_message = new HelloMessage(myID, 0, 2);
+            String[] valid_peers = myMuxDemux.get_valid_peers();
+            for (int i=0; i < valid_peers.length ; i++) {
+                new_message.addPeer(valid_peers[i]);
+            }
             String encoded_new_message = new_message.getHelloMessageAsEncodedString();
             myMuxDemux.send(encoded_new_message);
             try {
