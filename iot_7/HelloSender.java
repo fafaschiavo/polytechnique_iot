@@ -41,6 +41,7 @@ public class HelloSender implements SimpleMessageHandler{
             // HelloSender only generate messages
             // /////////////////////////////////////////////////////////////////////////////////////////////
 
+            sequence_number = myMuxDemux.get_self_sequence_number();
             HelloMessage new_message = new HelloMessage(myID, sequence_number, hello_interval);
             String[] valid_peers = myMuxDemux.get_valid_peers();
             System.out.println("Current valid peers in peer list:" + Arrays.toString(valid_peers));
@@ -50,7 +51,6 @@ public class HelloSender implements SimpleMessageHandler{
             String encoded_new_message = new_message.getHelloMessageAsEncodedString();
             System.out.println("HelloSender sent: " + encoded_new_message);
             myMuxDemux.send(encoded_new_message);
-            sequence_number = sequence_number + 1;
             try {
               Thread.sleep(2000);
             } catch(InterruptedException ex) {

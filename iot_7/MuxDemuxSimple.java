@@ -28,6 +28,8 @@ public class MuxDemuxSimple implements Runnable{
     private SynchronizedListQueue outgoing = new SynchronizedListQueue();
     private Boolean reading_thread_up = false;
     private HashMap<String, Peer> peer_table = new HashMap<String, Peer>();
+    private Database self_database = new Database();
+    private HashMap<String, Database> peer_databases = new HashMap<String, Database>();
 
 	MuxDemuxSimple(SimpleMessageHandler[] h, DatagramSocket s, String constructor_ID){
 		myS = s;
@@ -126,6 +128,11 @@ public class MuxDemuxSimple implements Runnable{
 		String[] valid_peers_array = new String[valid_peers_list.size()];
 		valid_peers_array = valid_peers_list.toArray(valid_peers_array);
 		return valid_peers_array;
+	}
+
+	public int get_self_sequence_number(){
+		int sequence_number = self_database.getDatabaseSequenceNumber();
+		return sequence_number;
 	}
 
 	public static void main(String[] args) {

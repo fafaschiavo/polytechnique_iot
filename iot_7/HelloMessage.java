@@ -9,7 +9,7 @@ public class HelloMessage {
 	private List<String> peers_array = new ArrayList<String>();
 
 	// /////////////////////////////////////////////////////////////////////////////////////////////
-	// This constructor will be necessary to transform raw hello messages into uusabble objects.
+	// This constructor will be necessary to transform raw hello messages into usable objects.
 	// Since I am not in controll of what others can send in the link, I better check if the package is well formatted, and if not, throw an exception.
 	// /////////////////////////////////////////////////////////////////////////////////////////////
 	public HelloMessage(String s) {
