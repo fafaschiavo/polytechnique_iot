@@ -46,7 +46,6 @@ public class MuxDemuxSimple implements Runnable{
 			System.out.println("Writting Thread Started...");
 			while(true){
 				try{
-
 					String message_to_send = outgoing.dequeue();
 					byte[] byteArray = message_to_send.getBytes();
 					try{
@@ -155,6 +154,10 @@ public class MuxDemuxSimple implements Runnable{
 		return sequence_number;
 	}
 
+	public void add_to_self_database(String element){
+		self_database.add_to_database(element);
+	}
+
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.err.println("Usage: java MuxDemuxSimple YOUR_ID");
@@ -181,6 +184,10 @@ public class MuxDemuxSimple implements Runnable{
 			new Thread(handlers[1]).start();
 			new Thread(handlers[2]).start();
 			new Thread(handlers[3]).start();
+			dm.add_to_self_database("This");
+			dm.add_to_self_database("is");
+			dm.add_to_self_database("a");
+			dm.add_to_self_database("test");
 
 			// Launch reading Thread
 			new Thread(dm).start();
