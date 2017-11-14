@@ -158,6 +158,10 @@ public class MuxDemuxSimple implements Runnable{
 		self_database.add_to_database(element);
 	}
 
+	public Vector get_self_database_dump(){
+		return self_database.get_database_dump();
+	}
+
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.err.println("Usage: java MuxDemuxSimple YOUR_ID");
@@ -168,11 +172,12 @@ public class MuxDemuxSimple implements Runnable{
 		System.out.println("==========================================");
 		System.out.println("Hi there! This computer's ID is: " + myID);
 		System.out.println("==========================================");
-		SimpleMessageHandler[] handlers = new SimpleMessageHandler[4];
+		SimpleMessageHandler[] handlers = new SimpleMessageHandler[5];
 		handlers[0] = new HelloSender(myID);
 		handlers[1]= new HelloReceiver(myID);
 		handlers[2]= new DebugReceiver();
 		handlers[3]= new SynSender(myID);
+		handlers[4]= new ListSender(myID);
 
 		try {
 			DatagramSocket mySocket = new DatagramSocket(4242);
@@ -180,10 +185,12 @@ public class MuxDemuxSimple implements Runnable{
 			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, myID);
 			handlers[0].setMuxDemux(dm);
 			handlers[3].setMuxDemux(dm);
+			handlers[4].setMuxDemux(dm);
 			new Thread(handlers[0]).start();
 			new Thread(handlers[1]).start();
 			new Thread(handlers[2]).start();
 			new Thread(handlers[3]).start();
+			new Thread(handlers[4]).start();
 			dm.add_to_self_database("This");
 			dm.add_to_self_database("is");
 			dm.add_to_self_database("a");
