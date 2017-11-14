@@ -43,22 +43,8 @@ public class HelloReceiver implements SimpleMessageHandler{
             } catch (NoSuchElementException e){
                 // Nothing in queue
             } catch (RuntimeException e){
-                System.out.println(e);
-                System.out.println("Invalid Hello...");
+            // Message received is not a Hello, so just ignore it
             }
-
-            // /////////////////////////////////////////////////////////////////////////////////////////////
-            // HelloReceiver never generate messages
-            // /////////////////////////////////////////////////////////////////////////////////////////////
-
-            // HelloMessage new_message = new HelloMessage("fabricio", 0, 2);
-            // String encoded_new_message = new_message.getHelloMessageAsEncodedString();
-            // myMuxDemux.send(encoded_new_message);
-            // try {
-            //   Thread.sleep(2000);
-            // } catch(InterruptedException ex) {
-            //   Thread.currentThread().interrupt();
-            // }
 
         }
     }
