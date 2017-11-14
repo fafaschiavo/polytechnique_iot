@@ -60,7 +60,7 @@ public class ListMessage {
 	// This Method will return a string of the format established, encoding the attributes of the ListMessage object,
 	// all ready to be sent out over the network.
 	// /////////////////////////////////////////////////////////////////////////////////////////////
-	public String getHelloMessageAsEncodedString(){
+	public String getListMessageAsEncodedString(){
 		String encoded_message = "LIST";
 		encoded_message = encoded_message + ";" + sender_id + ";" + peer_id + ";" + Integer.toString(sequence_number) + ";" + Integer.toString(total_parts) + ";" + Integer.toString(part) + ";" + message_data + ";";
 		return encoded_message;

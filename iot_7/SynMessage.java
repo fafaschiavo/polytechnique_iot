@@ -48,7 +48,7 @@ public class SynMessage {
 	// This Method will return a string of the format established, encoding the attributes of the SynMessage object,
 	// all ready to be sent out over the network.
 	// /////////////////////////////////////////////////////////////////////////////////////////////
-	public String getHelloMessageAsEncodedString(){
+	public String getSynMessageAsEncodedString(){
 		String encoded_message = "SYN";
 		encoded_message = encoded_message + ";" + sender_id + ";" + peer_id + ";" + Integer.toString(sequence_number) + ";";
 		return encoded_message;

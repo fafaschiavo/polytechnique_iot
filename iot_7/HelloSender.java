@@ -1,6 +1,8 @@
 import java.util.NoSuchElementException;
 import java.net.InetAddress;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HelloSender implements SimpleMessageHandler{
 

@@ -130,6 +130,26 @@ public class MuxDemuxSimple implements Runnable{
 		return valid_peers_array;
 	}
 
+	public HashMap<String, Integer> get_inconsistent_peers(){
+		int valid_counter = 0;
+		HashMap<String, Integer> inconsistent_peers_list = new HashMap<String, Integer>();
+
+		Iterator it = peer_table.entrySet().iterator();
+		while (it.hasNext()) {
+
+			Map.Entry pair = (Map.Entry)it.next();
+			if (peer_table.get(pair.getKey()).is_peer_inconsistent()) {
+				String peer_id = peer_table.get(pair.getKey()).get_peer_id();
+				int peer_available_sequence_number = peer_table.get(pair.getKey()).get_peer_available_sequence_number();
+				inconsistent_peers_list.put(peer_id, peer_available_sequence_number);
+			}else{
+				it.remove();
+			}
+
+		}
+		return inconsistent_peers_list;
+	}
+
 	public int get_self_sequence_number(){
 		int sequence_number = self_database.getDatabaseSequenceNumber();
 		return sequence_number;
@@ -145,19 +165,22 @@ public class MuxDemuxSimple implements Runnable{
 		System.out.println("==========================================");
 		System.out.println("Hi there! This computer's ID is: " + myID);
 		System.out.println("==========================================");
-		SimpleMessageHandler[] handlers = new SimpleMessageHandler[3];
+		SimpleMessageHandler[] handlers = new SimpleMessageHandler[4];
 		handlers[0] = new HelloSender(myID);
 		handlers[1]= new HelloReceiver(myID);
 		handlers[2]= new DebugReceiver();
+		handlers[3]= new SynSender(myID);
 
 		try {
 			DatagramSocket mySocket = new DatagramSocket(4242);
 			mySocket.setBroadcast(true);
 			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, myID);
 			handlers[0].setMuxDemux(dm);
+			handlers[3].setMuxDemux(dm);
 			new Thread(handlers[0]).start();
 			new Thread(handlers[1]).start();
 			new Thread(handlers[2]).start();
+			new Thread(handlers[3]).start();
 
 			// Launch reading Thread
 			new Thread(dm).start();

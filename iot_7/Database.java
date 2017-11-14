@@ -22,7 +22,7 @@ import java.util.Vector;
 
 public class Database{
 
-	private Vector table = new Vector(); // Better use a Vectoro to ensure a thread safe class 
+	private Vector table = new Vector(); // Better use a Vector to ensure a thread safe class 
 	private int sequence_number = 0;
 
 	Database(){}
