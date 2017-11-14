@@ -50,6 +50,11 @@ public class Peer{
 
 	}
 
+	public void set_as_synchronized(int new_peerSeqNum){
+		peerSeqNum = new_peerSeqNum;
+		peerState = "synchronised";
+	}
+
 	public String get_peer_id(){
 		return peerID;
 	}

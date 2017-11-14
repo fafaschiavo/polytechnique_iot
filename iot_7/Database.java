@@ -23,7 +23,7 @@ import java.util.Vector;
 public class Database{
 
 	private Vector table = new Vector(); // Better use a Vector to ensure a thread safe class 
-	private int sequence_number = 0;
+	private int sequence_number = -1;
 
 	Database(){}
 
@@ -37,7 +37,7 @@ public class Database{
 	// /////////////////////////////////////////////////////////////////////////////////////////////
 	// Empty the database, preparing it to receive the peer's dump
 	// /////////////////////////////////////////////////////////////////////////////////////////////
-	public void clear_database(String element){
+	public void clear_database(){
 		table.clear();
 		sequence_number = -1;
 	}
@@ -53,12 +53,12 @@ public class Database{
 	// /////////////////////////////////////////////////////////////////////////////////////////////
 	// Set new squence number - will be called after done receciving dump to establish current version 
 	// /////////////////////////////////////////////////////////////////////////////////////////////
-	public void clear_database(int seqNumber){
+	public void set_new_sequence_number(int seqNumber){
 		sequence_number = seqNumber;
 	}
 
 	// /////////////////////////////////////////////////////////////////////////////////////////////
-	// Return a dump of the current database - important for brain dumping myy ownn database to others
+	// Return a dump of the current database - important for brain dumping myy ownn database to 
 	// /////////////////////////////////////////////////////////////////////////////////////////////
 	public Vector get_database_dump(){
 		return table;

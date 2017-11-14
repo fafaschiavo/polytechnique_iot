@@ -37,7 +37,6 @@ public class HelloReceiver implements SimpleMessageHandler{
 
                 String msg = incoming.dequeue();
                 HelloMessage received_message = new HelloMessage(msg);
-                System.out.println("HelloReceiver received: " + received_message.getHelloMessageAsEncodedString());
                 myMuxDemux.touch_new_peer(received_message.getSenderID(), ip_addresses.get(msg), received_message.getSequenceNumber(), received_message.getHelloInterval());
 
             } catch (NoSuchElementException e){

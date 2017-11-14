@@ -149,6 +149,10 @@ public class MuxDemuxSimple implements Runnable{
 		return inconsistent_peers_list;
 	}
 
+	public void set_peer_as_synchronized(String peerID, int seqNumber){
+		peer_table.get(peerID).set_as_synchronized(seqNumber);
+	}
+
 	public int get_self_sequence_number(){
 		int sequence_number = self_database.getDatabaseSequenceNumber();
 		return sequence_number;
@@ -160,6 +164,22 @@ public class MuxDemuxSimple implements Runnable{
 
 	public Vector get_self_database_dump(){
 		return self_database.get_database_dump();
+	}
+
+	public int get_database_sequence_number(String peerID){
+		return peer_databases.get(peerID).getDatabaseSequenceNumber();
+	}
+
+	public void set_database_sequence_number(String peerID, int seqNumber){
+		peer_databases.get(peerID).set_new_sequence_number(seqNumber);
+	}
+
+	public void add_to_database(String peerID, String content){
+		peer_databases.get(peerID).add_to_database(content);
+	}
+
+	public void clear_database(String peerID){
+		peer_databases.get(peerID).clear_database();
 	}
 
 	public static void main(String[] args) {

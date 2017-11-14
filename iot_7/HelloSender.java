@@ -8,7 +8,7 @@ public class HelloSender implements SimpleMessageHandler{
     private MuxDemuxSimple myMuxDemux = null;
     private String myID;
     private int sequence_number = 0;
-    private int hello_interval = 2;
+    private int hello_interval = 10;
 
 
     public HelloSender(String constructor_ID){
@@ -49,10 +49,10 @@ public class HelloSender implements SimpleMessageHandler{
                 new_message.addPeer(valid_peers[i]);
             }
             String encoded_new_message = new_message.getHelloMessageAsEncodedString();
-            System.out.println("HelloSender sent: " + encoded_new_message);
+            // System.out.println("HelloSender sent: " + encoded_new_message);
             myMuxDemux.send(encoded_new_message);
             try {
-              Thread.sleep(2000);
+              Thread.sleep(10000);
             } catch(InterruptedException ex) {
               Thread.currentThread().interrupt();
             }
