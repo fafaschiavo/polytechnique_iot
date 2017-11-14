@@ -44,7 +44,6 @@ public class HelloSender implements SimpleMessageHandler{
             sequence_number = myMuxDemux.get_self_sequence_number();
             HelloMessage new_message = new HelloMessage(myID, sequence_number, hello_interval);
             String[] valid_peers = myMuxDemux.get_valid_peers();
-            System.out.println("Current valid peers in peer list:" + Arrays.toString(valid_peers));
             for (int i=0; i < valid_peers.length ; i++) {
                 new_message.addPeer(valid_peers[i]);
             }

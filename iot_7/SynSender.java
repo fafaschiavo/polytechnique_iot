@@ -36,18 +36,21 @@ public class SynSender implements SimpleMessageHandler{
 
             HashMap<String, Integer> invalid_peers = myMuxDemux.get_inconsistent_peers();
 
+            System.out.println("=================================" + invalid_peers);
             for (Map.Entry<String, Integer> entry : invalid_peers.entrySet())
             {
                 String peer_id = entry.getKey();
-                int peer_available_sequence_number = entry.getValue();
-                SynMessage new_message = new SynMessage(myID, peer_id, peer_available_sequence_number);
-                String encoded_new_message = new_message.getSynMessageAsEncodedString();
-                myMuxDemux.send(encoded_new_message);
-
-                try {
-                  Thread.sleep(100);
-                } catch(InterruptedException ex) {
-                  Thread.currentThread().interrupt();
+                if (!peer_id.equals(myID)) {                
+                    int peer_available_sequence_number = entry.getValue();
+                    SynMessage new_message = new SynMessage(myID, peer_id, peer_available_sequence_number);
+                    String encoded_new_message = new_message.getSynMessageAsEncodedString();
+                    myMuxDemux.send(encoded_new_message);
+                    
+                    try {
+                      Thread.sleep(100);
+                    } catch(InterruptedException ex) {
+                      Thread.currentThread().interrupt();
+                    }
                 }
             }
 

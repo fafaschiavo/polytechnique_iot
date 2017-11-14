@@ -30,7 +30,7 @@ public class ListSender implements SimpleMessageHandler{
             try{
                 String msg = incoming_sync_requests.dequeue();
                 SynMessage new_sync_request = new SynMessage(msg);
-	            String peerID = new_sync_request.getPeerID();
+	            String peerID = new_sync_request.getSenderID();
 	            Vector local_dump = myMuxDemux.get_self_database_dump();
 	            int my_sequence_number = myMuxDemux.get_self_sequence_number();
 	            int total_parts = local_dump.size();

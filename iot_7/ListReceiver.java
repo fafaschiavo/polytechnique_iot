@@ -34,7 +34,7 @@ public class ListReceiver implements SimpleMessageHandler{
                 String msg = incoming_list_messages.dequeue();
                 ListMessage new_list_request = new ListMessage(msg);
                 // System.out.println("========================================================= " + myID +  " |---| " + new_list_request.getPeerID());
-                if (!new_list_request.getPeerID().equals(myID) && !new_list_request.getSenderID().equals(myID)) {
+                if (new_list_request.getPeerID().equals(myID) && !new_list_request.getSenderID().equals(myID)) {
                 	System.out.println("========================================================= Received a List Message");
                 	System.out.println("========================================================= " + new_list_request);
                 	System.out.println(new_list_request.getPeerID() + "|==========|" + myID);

@@ -204,6 +204,10 @@ public class MuxDemuxSimple implements Runnable{
 			DatagramSocket mySocket = new DatagramSocket(4242);
 			mySocket.setBroadcast(true);
 			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, myID);
+			dm.add_to_self_database("This");
+			dm.add_to_self_database("is");
+			dm.add_to_self_database("a");
+			dm.add_to_self_database("test");
 			handlers[0].setMuxDemux(dm);
 			handlers[3].setMuxDemux(dm);
 			handlers[4].setMuxDemux(dm);
@@ -213,11 +217,7 @@ public class MuxDemuxSimple implements Runnable{
 			new Thread(handlers[2]).start();
 			new Thread(handlers[3]).start();
 			new Thread(handlers[4]).start();
-			new Thread(handlers[5]).start();
-			dm.add_to_self_database("This");
-			dm.add_to_self_database("is");
-			dm.add_to_self_database("a");
-			dm.add_to_self_database("test");
+			// new Thread(handlers[5]).start();
 
 			// Launch reading Thread
 			new Thread(dm).start();

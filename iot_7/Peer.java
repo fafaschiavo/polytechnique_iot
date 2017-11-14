@@ -46,7 +46,7 @@ public class Peer{
 		if (new_peerSeqNum == peerSeqNum && peerState.equals("synchronised")) {
 			peerState = "synchronised";
 		}
-		available_sequence_number = new_peerSeqNum;
+		// available_sequence_number = new_peerSeqNum;
 
 	}
 
