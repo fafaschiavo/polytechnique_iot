@@ -141,7 +141,7 @@ public class MuxDemuxSimple implements Runnable{
 				int peer_available_sequence_number = peer_table.get(pair.getKey()).get_peer_available_sequence_number();
 				inconsistent_peers_list.put(peer_id, peer_available_sequence_number);
 			}else{
-				// it.remove();
+				System.out.println("Got a consistent one: " + peer_table.get(pair.getKey()).get_peer_state());
 			}
 
 		}
@@ -178,7 +178,6 @@ public class MuxDemuxSimple implements Runnable{
 	}
 
 	public void clear_database(String peerID){
-		System.out.println(peer_databases);
 		peer_databases.get(peerID).clear_database();
 	}
 

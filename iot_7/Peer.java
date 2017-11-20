@@ -35,7 +35,7 @@ public class Peer{
 		peerState = "heard";
 		synchronizing_starting_point = System.currentTimeMillis();
 		expirationTime = System.currentTimeMillis();
-		expirationTime = expirationTime + (expiration_delay*1000);
+		expirationTime = expirationTime + ((expiration_delay+1)*1000);
 	}
 
 	public void update_peer_state(int new_peerSeqNum, int expiration_delay){
@@ -68,6 +68,10 @@ public class Peer{
 
 	public String get_peer_id(){
 		return peerID;
+	}
+
+	public String get_peer_state(){
+		return peerState;
 	}
 
 	public int get_peer_sequence_number(){
