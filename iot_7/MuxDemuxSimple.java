@@ -141,7 +141,7 @@ public class MuxDemuxSimple implements Runnable{
 				int peer_available_sequence_number = peer_table.get(pair.getKey()).get_peer_available_sequence_number();
 				inconsistent_peers_list.put(peer_id, peer_available_sequence_number);
 			}else{
-				System.out.println("Got a consistent one: " + peer_table.get(pair.getKey()).get_peer_state());
+				// The peer is synchronized or it already sent a sync request and it is waiting for the list messages...
 			}
 
 		}
@@ -203,10 +203,9 @@ public class MuxDemuxSimple implements Runnable{
 			DatagramSocket mySocket = new DatagramSocket(4242);
 			mySocket.setBroadcast(true);
 			MuxDemuxSimple dm = new MuxDemuxSimple(handlers, mySocket, myID);
-			dm.add_to_self_database("This");
-			dm.add_to_self_database("is");
-			dm.add_to_self_database("a");
-			dm.add_to_self_database("test");
+			dm.add_to_self_database("why");
+			dm.add_to_self_database("not");
+			dm.add_to_self_database("zoidberg");
 			handlers[0].setMuxDemux(dm);
 			handlers[3].setMuxDemux(dm);
 			handlers[4].setMuxDemux(dm);
