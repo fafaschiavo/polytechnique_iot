@@ -23,7 +23,7 @@ public class Peer{
 	private long expirationTime;
 	private String peerState;
 	private int available_sequence_number;
-	private int is_synchronizing;
+	private Boolean is_synchronizing;
 	private long synchronizing_starting_point;
 
 	Peer(String new_peerID, InetAddress new_peerIPAddress, int new_peerSeqNum, int expiration_delay){
@@ -86,8 +86,6 @@ public class Peer{
 			return false;
 		}
 	}
-
-	public 
 
 	public Boolean is_peer_inconsistent(){
 		if (peerState.equals("inconsistent") && !is_synchronizing) {
