@@ -54,7 +54,7 @@ public class SynSender implements SimpleMessageHandler{
             }
 
             try {
-              Thread.sleep(200);
+              Thread.sleep(1000);
             } catch(InterruptedException ex) {
               Thread.currentThread().interrupt();
             }

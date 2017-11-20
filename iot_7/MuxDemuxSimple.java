@@ -189,13 +189,13 @@ public class MuxDemuxSimple implements Runnable{
 		System.out.println("==========================================");
 		System.out.println("Hi there! This computer's ID is: " + myID);
 		System.out.println("==========================================");
-		SimpleMessageHandler[] handlers = new SimpleMessageHandler[5];
+		SimpleMessageHandler[] handlers = new SimpleMessageHandler[6];
 		handlers[0] = new HelloSender(myID);
 		handlers[1]= new HelloReceiver(myID);
 		handlers[2]= new DebugReceiver();
 		handlers[3]= new SynSender(myID);
 		handlers[4]= new ListSender(myID);
-		// handlers[5]= new ListReceiver(myID);
+		handlers[5]= new ListReceiver(myID);
 
 		try {
 			DatagramSocket mySocket = new DatagramSocket(4242);
@@ -208,13 +208,13 @@ public class MuxDemuxSimple implements Runnable{
 			handlers[0].setMuxDemux(dm);
 			handlers[3].setMuxDemux(dm);
 			handlers[4].setMuxDemux(dm);
-			// handlers[5].setMuxDemux(dm);
+			handlers[5].setMuxDemux(dm);
 			new Thread(handlers[0]).start();
 			new Thread(handlers[1]).start();
 			new Thread(handlers[2]).start();
 			new Thread(handlers[3]).start();
 			new Thread(handlers[4]).start();
-			// new Thread(handlers[5]).start();
+			new Thread(handlers[5]).start();
 
 			// Launch reading Thread
 			new Thread(dm).start();

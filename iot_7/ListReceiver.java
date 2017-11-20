@@ -33,11 +33,7 @@ public class ListReceiver implements SimpleMessageHandler{
             try{
                 String msg = incoming_list_messages.dequeue();
                 ListMessage new_list_request = new ListMessage(msg);
-                // System.out.println("========================================================= " + myID +  " |---| " + new_list_request.getPeerID());
                 if (new_list_request.getPeerID().equals(myID) && !new_list_request.getSenderID().equals(myID)) {
-                	System.out.println("========================================================= Received a List Message");
-                	System.out.println("========================================================= " + new_list_request);
-                	System.out.println(new_list_request.getPeerID() + "|==========|" + myID);
                 	String sender_id = new_list_request.getSenderID();
                 	int total_chunks = new_list_request.getTotalParts();
                 	int current_chunk = new_list_request.getPart();
@@ -52,7 +48,6 @@ public class ListReceiver implements SimpleMessageHandler{
 						myMuxDemux.clear_database(sender_id);
 
 						if (peer_sync_current.get(sender_id) == current_chunk) {
-							System.out.println("========================================================= FLAG1");
 							myMuxDemux.add_to_database(sender_id, current_content);
 							peer_sync_current.put(sender_id, peer_sync_current.get(sender_id) + 1);
 						}
@@ -60,7 +55,6 @@ public class ListReceiver implements SimpleMessageHandler{
 					}else{
 
 						if (peer_sync_current.get(sender_id) == current_chunk) {
-							System.out.println("========================================================= FLAG2");
 							myMuxDemux.add_to_database(sender_id, current_content);
 							peer_sync_current.put(sender_id, peer_sync_current.get(sender_id) + 1);
 						}
@@ -70,10 +64,7 @@ public class ListReceiver implements SimpleMessageHandler{
 					if (peer_sync_current.get(sender_id) == peer_sync_total.get(sender_id)) {
 						myMuxDemux.set_database_sequence_number(sender_id, peer_database_sequence_number);
 						myMuxDemux.set_peer_as_synchronized(sender_id, peer_database_sequence_number);
-						System.out.println("========================================================= I am done Here");
 					}
-
-					System.out.println("=========================================================" + peer_sync_current);
 
                 }else{
                 	// The message is not for me, simply ignore it...
