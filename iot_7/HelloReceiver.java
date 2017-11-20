@@ -32,9 +32,7 @@ public class HelloReceiver implements SimpleMessageHandler{
             // /////////////////////////////////////////////////////////////////////////////////////////////
             // HelloReceiver only receives messages
             // /////////////////////////////////////////////////////////////////////////////////////////////
-
             try{
-
                 String msg = incoming.dequeue();
                 HelloMessage received_message = new HelloMessage(msg);
                 myMuxDemux.touch_new_peer(received_message.getSenderID(), ip_addresses.get(msg), received_message.getSequenceNumber(), received_message.getHelloInterval());

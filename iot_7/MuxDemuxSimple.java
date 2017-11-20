@@ -105,7 +105,7 @@ public class MuxDemuxSimple implements Runnable{
 			}else{
 				Peer existing_peer = peer_table.get(new_peerID);
 				existing_peer.update_peer_state(new_peerSeqNum, expiration_delay);
-			}		
+			}
 		}
 
 	}
@@ -113,7 +113,6 @@ public class MuxDemuxSimple implements Runnable{
 	public String[] get_valid_peers(){
 		int valid_counter = 0;
 		List<String> valid_peers_list = new ArrayList<String>();
-
 		Iterator it = peer_table.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry)it.next();
@@ -132,17 +131,15 @@ public class MuxDemuxSimple implements Runnable{
 	public HashMap<String, Integer> get_inconsistent_peers(){
 		int valid_counter = 0;
 		HashMap<String, Integer> inconsistent_peers_list = new HashMap<String, Integer>();
-
 		Iterator it = peer_table.entrySet().iterator();
 		while (it.hasNext()) {
-
 			Map.Entry pair = (Map.Entry)it.next();
 			if (peer_table.get(pair.getKey()).is_peer_inconsistent()) {
 				String peer_id = peer_table.get(pair.getKey()).get_peer_id();
 				int peer_available_sequence_number = peer_table.get(pair.getKey()).get_peer_available_sequence_number();
 				inconsistent_peers_list.put(peer_id, peer_available_sequence_number);
 			}else{
-				it.remove();
+				// it.remove();
 			}
 
 		}
