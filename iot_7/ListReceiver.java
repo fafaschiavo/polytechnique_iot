@@ -36,21 +36,17 @@ public class ListReceiver implements SimpleMessageHandler{
 
 
                 if (new_list_request.getPeerID().equals(myID) && !new_list_request.getSenderID().equals(myID)) {
-
-                    System.out.println("Got here - " + new_list_request);
-                	
                     String sender_id = new_list_request.getSenderID();
-                	int total_chunks = new_list_request.getTotalParts();
-                	int current_chunk = new_list_request.getPart();
-                	int peer_database_sequence_number = new_list_request.getSequenceNumber();
-                	String current_content = new_list_request.getMessageData();
+                    int total_chunks = new_list_request.getTotalParts();
+                    int current_chunk = new_list_request.getPart();
+                    int peer_database_sequence_number = new_list_request.getSequenceNumber();
+                    String current_content = new_list_request.getMessageData();
 
 					if (peer_sync_total.get(sender_id) == null) {
-
-						peer_sync_total.put(sender_id, total_chunks);
-						peer_sync_current.put(sender_id, 0);
-						peer_sync_sequence_number.put(sender_id, peer_database_sequence_number);
-						myMuxDemux.clear_database(sender_id);
+                        peer_sync_total.put(sender_id, total_chunks);
+                        peer_sync_current.put(sender_id, 0);
+                        peer_sync_sequence_number.put(sender_id, peer_database_sequence_number);
+                        myMuxDemux.clear_database(sender_id);
 
 						if (peer_sync_current.get(sender_id) == current_chunk) {
 							myMuxDemux.add_to_database(sender_id, current_content);
@@ -67,7 +63,6 @@ public class ListReceiver implements SimpleMessageHandler{
 					}
 
 					if (peer_sync_current.get(sender_id) == (peer_sync_total.get(sender_id) - 1)) {
-                        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Done here");
                         peer_sync_total.remove(sender_id);
                         peer_sync_current.remove(sender_id);
                         peer_sync_sequence_number.remove(sender_id);
@@ -79,7 +74,7 @@ public class ListReceiver implements SimpleMessageHandler{
                 	// The message is not for me, simply ignore it...
                 }
             } catch (NoSuchElementException e){
-                // System.out.println("Nothing in queue...");
+                // Nothing in queue to process...
             } catch (RuntimeException e){
                 // Message received is not a Sync request, so just ignore it
             }

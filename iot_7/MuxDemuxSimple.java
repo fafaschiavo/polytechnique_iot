@@ -102,6 +102,8 @@ public class MuxDemuxSimple implements Runnable{
 			if (peer_table.get(new_peerID) == null) {
 				Peer new_peer = new Peer(new_peerID, new_peerIPAddress, new_peerSeqNum, expiration_delay);
 				peer_table.put(new_peerID, new_peer);
+				Database new_database = new Database();
+				peer_databases.put(new_peerID, new_database);
 			}else{
 				Peer existing_peer = peer_table.get(new_peerID);
 				existing_peer.update_peer_state(new_peerSeqNum, expiration_delay);
@@ -176,6 +178,7 @@ public class MuxDemuxSimple implements Runnable{
 	}
 
 	public void clear_database(String peerID){
+		System.out.println(peer_databases);
 		peer_databases.get(peerID).clear_database();
 	}
 
