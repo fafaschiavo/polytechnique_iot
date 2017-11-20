@@ -23,13 +23,17 @@ public class Peer{
 	private long expirationTime;
 	private String peerState;
 	private int available_sequence_number;
+	private int is_synchronizing;
+	private long synchronizing_starting_point;
 
 	Peer(String new_peerID, InetAddress new_peerIPAddress, int new_peerSeqNum, int expiration_delay){
 		peerID = new_peerID;
 		peerIPAddress = new_peerIPAddress;
 		peerSeqNum = -1;
 		available_sequence_number = -1;
+		is_synchronizing = false;
 		peerState = "heard";
+		synchronizing_starting_point = System.currentTimeMillis();
 		expirationTime = System.currentTimeMillis();
 		expirationTime = expirationTime + (expiration_delay*1000);
 	}
@@ -45,8 +49,15 @@ public class Peer{
 		}
 		if (new_peerSeqNum == peerSeqNum && peerState.equals("synchronised")) {
 			peerState = "synchronised";
+			is_synchronizing = false;
 		}
 		available_sequence_number = new_peerSeqNum;
+
+		long current_time = System.currentTimeMillis();
+		long sync_limit = synchronizing_starting_point + (expiration_delay*1000);
+		if(current_time > sync_limit){
+			is_synchronizing = false;
+		}
 
 	}
 
@@ -76,8 +87,12 @@ public class Peer{
 		}
 	}
 
+	public 
+
 	public Boolean is_peer_inconsistent(){
-		if (peerState.equals("inconsistent")) {
+		if (peerState.equals("inconsistent") && !is_synchronizing) {
+			is_synchronizing = true;
+			synchronizing_starting_point = System.currentTimeMillis();
 			return true;
 		}else{
 			return false;

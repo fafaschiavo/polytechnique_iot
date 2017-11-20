@@ -33,8 +33,13 @@ public class ListReceiver implements SimpleMessageHandler{
             try{
                 String msg = incoming_list_messages.dequeue();
                 ListMessage new_list_request = new ListMessage(msg);
+
+
                 if (new_list_request.getPeerID().equals(myID) && !new_list_request.getSenderID().equals(myID)) {
-                	String sender_id = new_list_request.getSenderID();
+
+                    System.out.println("Got here - " + new_list_request);
+                	
+                    String sender_id = new_list_request.getSenderID();
                 	int total_chunks = new_list_request.getTotalParts();
                 	int current_chunk = new_list_request.getPart();
                 	int peer_database_sequence_number = new_list_request.getSequenceNumber();
@@ -61,7 +66,11 @@ public class ListReceiver implements SimpleMessageHandler{
 
 					}
 
-					if (peer_sync_current.get(sender_id) == peer_sync_total.get(sender_id)) {
+					if (peer_sync_current.get(sender_id) == (peer_sync_total.get(sender_id) - 1)) {
+                        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Done here");
+                        peer_sync_total.remove(sender_id);
+                        peer_sync_current.remove(sender_id);
+                        peer_sync_sequence_number.remove(sender_id);
 						myMuxDemux.set_database_sequence_number(sender_id, peer_database_sequence_number);
 						myMuxDemux.set_peer_as_synchronized(sender_id, peer_database_sequence_number);
 					}

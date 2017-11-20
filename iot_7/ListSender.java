@@ -34,9 +34,6 @@ public class ListSender implements SimpleMessageHandler{
 	            String destinationID = new_sync_request.getPeerID();
 
 	            if (!peerID.equals(myID)) {
-
-	            	System.out.println("Better send - " + peerID);
-	            	
 		            Vector local_dump = myMuxDemux.get_self_database_dump();
 		            int my_sequence_number = myMuxDemux.get_self_sequence_number();
 		            int total_parts = local_dump.size();
